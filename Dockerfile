@@ -3,6 +3,5 @@ WORKDIR /usr/src/only-in-dreams
 COPY . .
 RUN cargo install --path .
 
-FROM alpine:latest
+FROM debian:bullseye-slim
 COPY --from=builder /usr/local/cargo/bin/primes /usr/local/bin/primes
-COPY --from=builder /usr/local/cargo/bin/guesser /usr/local/bin/guesser

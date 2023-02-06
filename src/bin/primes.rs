@@ -3,9 +3,14 @@ use std::os::unix::net::UnixListener;
 use std::sync::{Arc, Mutex};
 
 fn main() -> std::io::Result<()> {
-    // We will check the first 10,000 prime numbers starting from the 1st prime
-    let num_primes = 10_000;
-    let starting_prime_index = 1;
+    let num_primes = std::env::var("NUM_PRIMES")
+        .map(|p| p.parse::<u64>().unwrap())
+        .unwrap_or(12);
+
+    let starting_prime_index = std::env::var("STARTING_PRIME_INDEX")
+        .map(|i| i.parse::<usize>().unwrap())
+        .unwrap_or(10);
+
     println!(
         "Generating the next {} primes starting at {}",
         num_primes, starting_prime_index
@@ -23,7 +28,10 @@ fn main() -> std::io::Result<()> {
 
     // Start a socket at this path
     // https://doc.rust-lang.org/std/os/unix/net/struct.UnixListener.html
-    let socket_path = std::env::var("COOKIE").unwrap_or("prime_sieve.sock".into());
+    let socket_path =
+        std::env::var("SOCKET_LOCATION").unwrap_or_else(|_| "prime_sieve.sock".into());
+    println!("{}", socket_path);
+    std::fs::remove_file(&socket_path)?;
     let unix_listener = UnixListener::bind(socket_path)?;
 
     // Always listening for incoming connections
@@ -42,8 +50,15 @@ fn main() -> std::io::Result<()> {
 
                     // When we receive any message through this socket
                     for _line in BufRead::lines(stream_reader) {
-                        // Compute the next prime number using the sieve
                         let mut prime_index = prime_index_lock.lock().unwrap();
+
+                        // Exit condition
+                        if *prime_index > num_primes.try_into().unwrap() {
+                            stream_writer.flush().unwrap();
+                            break;
+                        }
+
+                        // Compute the next prime number using the sieve
                         let prime = sieve_lock.lock().unwrap().nth_prime(*prime_index);
 
                         // Increment the prime number index
@@ -51,10 +66,13 @@ fn main() -> std::io::Result<()> {
 
                         // Write the prime to the stream
                         stream_writer
-                            .write_all(&prime.to_string().as_bytes())
+                            .write_all(prime.to_string().as_bytes())
                             .unwrap();
                         stream_writer.flush().unwrap();
                     }
+
+                    // Try to cleanup
+                    stream.shutdown(std::net::Shutdown::Both).unwrap();
                 });
             }
 

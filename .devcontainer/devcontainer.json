@@ -1,0 +1,48 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/rust
+{
+    "name": "Rust",
+    "image": "mcr.microsoft.com/devcontainers/rust:0-1-bullseye",
+    "features": {
+        "ghcr.io/devcontainers/features/git:1": {},
+        "ghcr.io/devcontainers/features/git-lfs:1": {},
+        "ghcr.io/devcontainers/features/github-cli:1": {},
+        "ghcr.io/devcontainers/features/common-utils:2": {},
+        "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
+        "ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
+            "packages": "socat"
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "EditorConfig.EditorConfig",
+                "rust-lang.rust-analyzer",
+                "bungcip.better-toml",
+                "streetsidesoftware.code-spell-checker",
+                "ms-azuretools.vscode-docker",
+                "mutantdino.resourcemonitor",
+                "tamasfe.even-better-toml",
+                "serayuzgur.crates",
+                "vadimcn.vscode-lldb"
+            ],
+            "settings": {
+                "cSpell.enabled": true,
+                "editor.formatOnSave": true,
+                "editor.formatOnPaste": true,
+                "[rust]": {
+                    "editor.defaultFormatter": "rust-lang.rust-analyzer"
+                },
+                "cSpell.words": [
+                    "ctfd",
+                    "dotenv",
+                    "ratelimit",
+                    "ratelimited",
+                    "REFERER",
+                    "reqwest"
+                ]
+            }
+        }
+    },
+    "postCreateCommand": "rustc --version"
+}

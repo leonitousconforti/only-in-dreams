@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+    primes:
+        build: .
+        command: primes
+        restart: unless-stopped
+        container_name: prime_sieve
+        environment:
+            - SOCKET_LOCATION=/var/run/prime_sieve.sock
+        volumes:
+            - ./prime_sieve.sock:/var/run/prime_sieve.sock:ro

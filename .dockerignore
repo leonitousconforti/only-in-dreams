@@ -1,0 +1,4 @@
+*.sock
+/target
+/.devcontainer
+/docker-compose.yaml

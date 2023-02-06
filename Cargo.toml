@@ -3,18 +3,6 @@ name = "only_in_dreams"
 version = "0.0.1"
 edition = "2021"
 
-# [[bin]]
-# name = "primes"
-# path = "src/primes.rs"
-
-# [[bin]]
-# name = "guesser"
-# path = "src/guesser.rs"
-
-# [[bin]]
-# name = "determine_ratelimit"
-# path = "src/determine_ratelimit.rs"
-
 [dependencies]
 rand = "0.8.5"
 regex = "1.7.1"

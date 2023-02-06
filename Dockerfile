@@ -4,5 +4,5 @@ COPY . .
 RUN cargo install --path .
 
 FROM alpine:latest
-COPY --from=builder /usr/local/bin/primes /usr/local/bin/primes
-COPY --from=builder /usr/local/bin/guesser /usr/local/bin/guesser
+COPY --from=builder /usr/local/cargo/bin/primes /usr/local/bin/primes
+COPY --from=builder /usr/local/cargo/bin/guesser /usr/local/bin/guesser

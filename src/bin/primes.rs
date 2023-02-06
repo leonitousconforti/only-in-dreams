@@ -31,7 +31,8 @@ fn main() -> std::io::Result<()> {
     let socket_path =
         std::env::var("SOCKET_LOCATION").unwrap_or_else(|_| "prime_sieve.sock".into());
     println!("{}", socket_path);
-    std::fs::remove_file(&socket_path)?;
+    std::fs::remove_file(&socket_path).ok();
+    println!("Here");
     let unix_listener = UnixListener::bind(socket_path)?;
 
     // Always listening for incoming connections

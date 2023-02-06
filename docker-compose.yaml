@@ -2,11 +2,14 @@ version: "3.9"
 services:
     primes:
         build: .
-        command: bash -c "sleep 100"
+        command: primes
         container_name: prime_sieve
         environment:
             - NUM_PRIMES=10000
             - STARTING_PRIME_INDEX=1
-            - SOCKET_LOCATION=/var/run/prime_sieve.sock
+            - SOCKET_LOCATION=/var/run/primes/prime_sieve.sock
         volumes:
-            - ./prime_sieve.sock:/var/run/prime_sieve.sock:rw
+            - prime_sieve_socket:/var/run/primes:rw
+
+volumes:
+    prime_sieve_socket:

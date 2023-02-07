@@ -1,6 +1,7 @@
-fn main() -> Result<(), Box<dyn std::error::Error>> {
-    dotenv::from_filename("/workspaces/only in dreams/bot/personal.env").ok();
+use std::io::{Read, Write};
+use std::os::unix::net::UnixStream;
 
+fn main() -> Result<(), Box<dyn std::error::Error>> {
     let email = std::env::var("EMAIL").unwrap_or_default();
     let username = std::env::var("USERNAME").unwrap();
     let password = std::env::var("PASSWORD").unwrap();
@@ -15,10 +16,19 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         password,
         name: username,
     };
-
+    println!("Starting guesser with user credentials: {:#?}", user);
     only_in_dreams::login(&client, &user).unwrap();
-    let result = only_in_dreams::attempt(&client, "1".into()).unwrap();
-    std::thread::sleep(only_in_dreams::RATELIMIT_SLEEP_DURATION);
-    println!("{:#?}", result);
-    Ok(())
+
+    let mut stream = UnixStream::connect("/var/run/primes/prime_sieve.sock").unwrap();
+    let mut buffer: [u8; 8] = [0; 8];
+
+    loop {
+        stream.write_all(b".\n").unwrap();
+        stream.flush().unwrap();
+        stream.read_exact(&mut buffer).unwrap();
+
+        let result = only_in_dreams::attempt(&client, usize::from_ne_bytes(buffer)).unwrap();
+        println!("{:#?}", result);
+        std::thread::sleep(only_in_dreams::RATELIMIT_SLEEP_DURATION);
+    }
 }

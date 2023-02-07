@@ -11,7 +11,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     only_in_dreams::login(&client, &user).unwrap();
     only_in_dreams::create_team(&client, &team).unwrap();
 
-    let result = only_in_dreams::attempt(&client, "1".into()).unwrap();
+    let result = only_in_dreams::attempt(&client, 1).unwrap();
     println!("{:#?}", result);
     println!("{:#?}\n{:#?}", user, team);
     Ok(())

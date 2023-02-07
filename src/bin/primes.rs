@@ -30,9 +30,7 @@ fn main() -> std::io::Result<()> {
     // https://doc.rust-lang.org/std/os/unix/net/struct.UnixListener.html
     let socket_path =
         std::env::var("SOCKET_LOCATION").unwrap_or_else(|_| "prime_sieve.sock".into());
-    println!("{}", socket_path);
     std::fs::remove_file(&socket_path).ok();
-    println!("Here");
     let unix_listener = UnixListener::bind(socket_path)?;
 
     // Always listening for incoming connections
@@ -66,9 +64,7 @@ fn main() -> std::io::Result<()> {
                         *prime_index += 1;
 
                         // Write the prime to the stream
-                        stream_writer
-                            .write_all(prime.to_string().as_bytes())
-                            .unwrap();
+                        stream_writer.write_all(&prime.to_ne_bytes()).unwrap();
                         stream_writer.flush().unwrap();
                     }
 

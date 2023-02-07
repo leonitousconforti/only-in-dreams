@@ -11,5 +11,18 @@ services:
         volumes:
             - prime_sieve_socket:/var/run/primes:rw
 
+    guesser1:
+        build: .
+        command: guesser
+        container_name: guesser1
+        depends_on:
+            - primes
+        environment:
+            - EMAIL=Q3PaVAn9je@gmail.com
+            - USERNAME=Q3PaVAn9je
+            - PASSWORD=password
+        volumes:
+            - prime_sieve_socket:/var/run/primes:rw
+
 volumes:
     prime_sieve_socket:

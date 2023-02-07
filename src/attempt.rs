@@ -2,13 +2,13 @@ use crate::{get_nonce_for_page, GuessBody, GuessResult};
 
 pub fn attempt(
     client: &reqwest::blocking::Client,
-    submission: String,
+    submission: usize,
 ) -> Result<GuessResult, Box<dyn std::error::Error>> {
     let challenges_nonce = get_nonce_for_page(client, "/challenges").unwrap();
 
     let guess_data = GuessBody {
-        submission,
         challenge_id: 7,
+        submission: submission.to_string(),
     };
 
     let response = client

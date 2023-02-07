@@ -1,5 +1,10 @@
 use reqwest::header::{HeaderMap, HeaderValue, HOST, ORIGIN, REFERER};
 
+lazy_static::lazy_static! {
+    static ref EXTRACT_NONCE_FROM_LINE: regex::Regex =
+        regex::Regex::new("'csrfNonce':\\s\"([\\w]{64})\",").unwrap();
+}
+
 const HOST_VALUE: &str = "ctf.acm.umn.edu";
 const ORIGIN_VALUE: &str = "https://ctf.acm.umn.edu";
 const REFERER_VALUE: &str = "https://ctf.acm.umn.edu/";
@@ -26,12 +31,10 @@ pub fn get_nonce_for_page(
 
     let csrf_nonce_line = response
         .lines()
-        .find(|&line| line.contains("'csrfNonce': "))
+        .find(|line| line.contains("'csrfNonce': "))
         .unwrap();
 
-    let extract_nonce_from_line = regex::Regex::new("'csrfNonce':\\s\"([\\w]{64})\",").unwrap();
-
-    let caps = extract_nonce_from_line.captures(csrf_nonce_line).unwrap();
+    let caps = EXTRACT_NONCE_FROM_LINE.captures(csrf_nonce_line).unwrap();
     let csrf_nonce = caps.get(1).unwrap().as_str();
 
     Ok(csrf_nonce.into())

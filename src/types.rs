@@ -16,7 +16,7 @@ impl UserCredentials {
         UserCredentials {
             email: random_email,
             name: random_username,
-            password: "password".into(),
+            password: "password".to_string(),
         }
     }
 }

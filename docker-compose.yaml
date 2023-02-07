@@ -11,6 +11,7 @@ services:
         volumes:
             - prime_sieve_socket:/var/run/primes:rw
 
+    # All these guessers were auto generated using src/bin/create_bot.rs
     guesser1:
         build: .
         command: guesser

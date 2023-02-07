@@ -28,7 +28,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         stream.read_exact(&mut buffer).unwrap();
 
         let result = only_in_dreams::attempt(&client, usize::from_ne_bytes(buffer)).unwrap();
-        println!("{:#?}", result);
+        println!("result for {} = {:?}", usize::from_ne_bytes(buffer), result);
         std::thread::sleep(only_in_dreams::RATELIMIT_SLEEP_DURATION);
     }
 }

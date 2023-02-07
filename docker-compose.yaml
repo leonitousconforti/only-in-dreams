@@ -14,12 +14,77 @@ services:
     guesser1:
         build: .
         command: guesser
-        container_name: guesser1
+        container_name: guesser_Q3PaVAn9je
         depends_on:
             - primes
         environment:
             - EMAIL=Q3PaVAn9je@gmail.com
             - USERNAME=Q3PaVAn9je
+            - PASSWORD=password
+        volumes:
+            - prime_sieve_socket:/var/run/primes:rw
+
+    guesser2:
+        build: .
+        command: guesser
+        container_name: guesser_qSb2GxiRHb
+        depends_on:
+            - primes
+        environment:
+            - EMAIL=qSb2GxiRHb@gmail.com
+            - USERNAME=qSb2GxiRHb
+            - PASSWORD=password
+        volumes:
+            - prime_sieve_socket:/var/run/primes:rw
+
+    guesser3:
+        build: .
+        command: guesser
+        container_name: guesser_aZSQwxprle
+        depends_on:
+            - primes
+        environment:
+            - EMAIL=aZSQwxprle@gmail.com
+            - USERNAME=aZSQwxprle
+            - PASSWORD=password
+        volumes:
+            - prime_sieve_socket:/var/run/primes:rw
+
+    guesser4:
+        build: .
+        command: guesser
+        container_name: guesser_EirnKT6g02
+        depends_on:
+            - primes
+        environment:
+            - EMAIL=EirnKT6g02@gmail.com
+            - USERNAME=EirnKT6g02
+            - PASSWORD=password
+        volumes:
+            - prime_sieve_socket:/var/run/primes:rw
+
+    guesser5:
+        build: .
+        command: guesser
+        container_name: guesser_6wNvu3xnFs
+        depends_on:
+            - primes
+        environment:
+            - EMAIL=6wNvu3xnFs@gmail.com
+            - USERNAME=6wNvu3xnFs
+            - PASSWORD=password
+        volumes:
+            - prime_sieve_socket:/var/run/primes:rw
+
+    guesser6:
+        build: .
+        command: guesser
+        container_name: guesser_Ot4wcSZrQG
+        depends_on:
+            - primes
+        environment:
+            - EMAIL=Ot4wcSZrQG@gmail.com
+            - USERNAME=Ot4wcSZrQG
             - PASSWORD=password
         volumes:
             - prime_sieve_socket:/var/run/primes:rw

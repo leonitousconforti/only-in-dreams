@@ -20,7 +20,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     only_in_dreams::login(&client, &user).unwrap();
 
     let mut stream = UnixStream::connect("/var/run/primes/prime_sieve.sock").unwrap();
-    let mut buffer: [u8; 8] = [0; 8];
+    let mut buffer: [u8; std::mem::size_of::<usize>()] = [0; std::mem::size_of::<usize>()];
 
     loop {
         stream.write_all(b".\n").unwrap();
